@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-amber: #fbbf24;
+            --accent-red: #f87171;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--accent-blue);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+        }
+
+        /* Navigation Sidebar */
+        .sidebar {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .nav-group {
+            margin-bottom: 20px;
+        }
+
+        .nav-group-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .nav-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            text-align: left;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-main);
+        }
+
+        .nav-btn.active {
+            background-color: var(--accent-blue);
+            color: var(--bg-primary);
+            font-weight: bold;
+        }
+
+        /* Main Content Viewport */
+        .main-viewport {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Animation & Mimic Panel Screen */
+        .mimic-panel {
+            background-color: #020617;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .mimic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .reactor-id {
+            background: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--accent-blue);
+            border: 1px solid var(--border-color);
+        }
+
+        .live-status-pill {
+            background-color: rgba(74, 222, 128, 0.1);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-status-pill::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Animated Graphic Display Area */
+        .animation-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 15px 0;
+            flex-grow: 1;
+        }
+
+        .vessel-graphic {
+            width: 90px;
+            height: 110px;
+            border: 3px solid #94a3b8;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vessel-fluid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: rgba(56, 189, 248, 0.3);
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            transition: all 0.5s ease;
+        }
+
+        .vessel-fluid.agitating {
+            animation: wave 1s infinite linear;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: skewY(0deg); }
+            50% { transform: skewY(3deg); }
+        }
+
+        .pipe-line {
+            height: 6px;
+            background: #475569;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .pipe-line.active-flow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            animation: flow 1.5s infinite linear;
+            background-size: 200% 100%;
+        }
+
+        @keyframes flow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Dashboard Parameter Panels */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .param-card {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .param-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .param-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            font-family: monospace;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        /* Alerts & Alarms Display */
+        .alert-box {
+            background-color: rgba(248, 113, 113, 0.15);
+            border: 1px solid var(--accent-red);
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-top: 15px;
+            color: #fca5a5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .alert-box.warning {
+            background-color: rgba(251, 191, 36, 0.15);
+            border: 1px solid var(--accent-amber);
+            color: #fde047;
+        }
+
+        /* Process Steps Documentation Layout */
+        .process-details-section {
+            margin-top: 35px;
+        }
+
+        .process-details-section h2 {
+            font-size: 1.6rem;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-tertiary);
+            padding-bottom: 8px;
+        }
+
+        .step-block {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .step-block h4 {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-badge {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+            color: var(--accent-blue);
+            font-family: monospace;
+        }
+
+        .sub-steps-list {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .sub-steps-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .sub-steps-list li::before {
+            content: "•";
+            color: var(--accent-blue);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .highlight-text {
+            color: var(--accent-amber);
+            font-weight: 600;
+        }
+
+        /* Decision Interface Controls */
+        .decision-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: filter 0.2s;
+        }
+
+        .action-btn.confirm { background-color: var(--accent-green); color: #000; }
+        .action-btn.reject { background-color: var(--accent-red); color: #fff; }
+        .action-btn:hover { filter: brightness(1.1); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>M A Y I L</h1>
+        <p>MODULE-1</p>
+    </header>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3> PROCESS FLOW STEPS</h3>
+            
+            <div class="nav-group">
+                <div class="nav-group-title">Stage I: Synthesis Loops</div>
+                <button class="nav-btn active" onclick="switchStage('nortel-coupling')">1. Nortel Coupling</button>
+                <button class="nav-btn" onclick="switchStage('specter-deprotect')">2. De-protection (Specter)</button>
+                <button class="nav-btn" onclick="switchStage('specter-coupling')">3. Specter Coupling</button>
+                <button class="nav-btn" onclick="switchStage('faraday-deprotect')">4. De-protection (Faraday)</button>
+                <button class="nav-btn" onclick="switchStage('faraday-coupling')">5. Faraday Coupling</button>
+                <button class="nav-btn" onclick="switchStage('bollinger-deprotect')">6. De-protection (Bollinger)</button>
+                <button class="nav-btn" onclick="switchStage('bollinger-coupling')">7. Bollinger Coupling</button>
+                <button class="nav-btn" onclick="switchStage('final-wash-isolation')">8. Wash Matrix & Isolation</button>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Stage II: Cleavage & Workup</div>
+                <button class="nav-btn" onclick="switchStage('cleavage-neutralization')">9. Cleavage & Neutralization</button>
+                <button class="nav-btn" onclick="switchStage('workup-extraction')">10. Extraction Cascade</button>
+                <button class="nav-btn" onclick="switchStage('concentration-precipitation')">11. Isolation & Final Release</button>
+            </div>
+        </nav>
+
+        <main class="main-viewport" id="stage-viewport">
+            </main>
+    </div>
+
+    <script>
+        // Data Vault containing full technical definitions mapped from the uploaded images
+        const processDatabase = {
+            'nortel-coupling': {
+                title: "1st PAA 'Nortel' Coupling & Capping Sequence",
+                vessel: "303HSPPS-C 1001",
+                vesselType: "Hastelloy Synthesis Vessel (3.0 KL)",
+                status: "Agitation Active",
+                fluidHeight: "55%",
+                fluidColor: "rgba(56, 189, 248, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Internal Temp", value: "20 ± 5°C" },
+                    { label: "Blanket Atmosphere", value: "Nitrogen (N2)" },
+                    { label: "Agitation Status", value: "Active - Hold NLT 2 min" },
+                    { label: "Current Cycle", value: "Step 1 of 3" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Exothermic Reaction - Control Addition Rate when introducing Douala (104.5 Lts)" },
+                    { type: 'danger', text: "CRITICAL ALERT: HCl Gas Liberated! Venting and scrubbing system running under load." }
+                ],
+                steps: [
+                    {
+                        title: "1. Pre-Requisites & Equipment Setup",
+                        details: [
+                            "Visual State initialization focuses on the main <span class='highlight-text'>303HSPPS-C 1001</span> reactor unit.",
+                            "System checks confirm the vessel is under an inert nitrogen blanket; a pulsing <span class='highlight-text'>N₂ molecule graphic</span> activates on screen.",
+                            "Action sequence loads <span class='highlight-text'>MCI liquid (~150 Lts)</span> through the raw material feed lines directly into the unit.",
+                            "The system initiates mass agitation and starts a countdown tracking an operational window of <span class='highlight-text'>Not Less Than (NLT) 2 minutes</span>.",
+                            "Upon cycle expiration, the waste line valves open, completely flushing out remaining residual wash solvent straight into the plant waste treatment lines."
+                        ]
+                    },
+                    {
+                        title: "2. The 'Nortel' Coupling Phase",
+                        details: [
+                            "Solid charging triggers the sealed glove box interface mechanics: <span class='highlight-text'>Sharva-11 (100 ± 0.5 kg)</span> and <span class='highlight-text'>Nortel (89.2 ± 0.4 kg)</span> raw powders are transferred inside under strict, closed nitrogen gas pressure lines.",
+                            "Liquid Additions Phase: <span class='highlight-text'>MCI (800 Lts)</span> solvent is sprayed via an automated spray-ball nozzle profile, immediately switching on the primary internal agitator blade assemblies.",
+                            "Exothermic Reaction tracking drops and stabilizes the mass cooling line strictly to <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Slow addition protocols track <span class='highlight-text'>Douala (104.5 Lts)</span> entry while monitoring visual hazard counters.",
+                            "Hold Time Check: A countdown timer locks down for exactly <span class='highlight-text'>2 hours ± 20 minutes</span> while the solution stirs continuously, moving mass automatically down to filter meshes once finished.",
+                            "DMF Washing Multi-Loops: A screen counter tracks a 5-round wash cycle (<span class='highlight-text'>1 of 5 up to 5 of 5</span>). Each single block pumps in <span class='highlight-text'>600 Lts of pure DMF</span>, stirs for <span class='highlight-text'>NLT 10 minutes</span>, and drains down."
+                        ]
+                    },
+                    {
+                        title: "3. The Capping Phase",
+                        details: [
+                            "Parallel Processing setup splits the interface display layout to loop in the side Capping Reactor vessel: <span class='highlight-text'>303SSR-C 1002</span>.",
+                            "Side Prep: Solution mixes <span class='highlight-text'>DMF (400 Lts) + Methanol (100 Lts) + Douala (26.1 Lts)</span>, stabilizing parameters to exactly <span class='highlight-text'>20 ± 2°C</span>.",
+                            "Transfer Mechanics: Specialized lines pressure-pump the prepared raw solution out of the SSR into the main synthesis unit under uninterrupted nitrogen pressure headers.",
+                            "Reaction Wrap-up: Main reactor stirs for <span class='highlight-text'>30 ± 10 minutes</span> (throwing a secondary HCl liberation warning block), followed by a final matrix of <span class='highlight-text'>5 DMF rinses (500 Lts each)</span> and <span class='highlight-text'>6 DMF washes (600 Lts each)</span>."
+                        ]
+                    }
+                ]
+            },
+            'specter-deprotect': {
+                title: "Visual Step-by-Step Flow: De-protection Phase (Intermediate Specter State)",
+                vessel: "303SSR-C 1002",
+                vesselType: "Stainless Steel Reaction Vessel",
+                status: "Looping (Cycle 1/2)",
+                fluidHeight: "70%",
+                fluidColor: "rgba(74, 222, 128, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Reaction Temp", value: "20 ± 5°C" },
+                    { label: "Cycle Loop", value: "2 Times Loop Structure" },
+                    { label: "Solvent Stream", value: "Persian in DMF Sol." },
+                    { label: "Agitation Timer", value: "20 ± 5 min" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Gas Emission Flag: CO2 Gas Liberated during deprotection cleavage reaction cycles." }
+                ],
+                steps: [
+                    {
+                        title: "1. Deprotection and Washings Loop Matrix",
+                        details: [
+                            "The visual UI focuses explicitly on the <span class='highlight-text'>303SSR-C 1002</span> side reactor module, triggering a border highlight.",
+                            "Material Flow pumps <span class='highlight-text'>Persian in DMF solution (2 × 600 Lts)</span> directly into the primary vessel interior.",
+                            "Thermal tracking loops monitor jacket systems to adjust and secure internal batch ranges at <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Transfer animation activates lines to guide the solution mass out towards the main HSPPS unit.",
+                            "A countdown clock executes an internal loop time frame tracking <span class='highlight-text'>20 ± 5 minutes</span> at <span class='highlight-text'>20 ± 5°C</span> under a constant, steady agitation index.",
+                            "Filtration loop records show the target volume straining down through a bottom filter array straight out to the plant recovery tank, looping the complete sequence a <span class='highlight-text'>2nd time</span>."
+                        ]
+                    },
+                    {
+                        title: "2. DMF Rinse Phase Loops",
+                        details: [
+                            "The system isolates the side reactor graphics and pumps a cleaning matrix of <span class='highlight-text'>3 × 100 Lts of pure DMF solvent</span> to rinse internal walls.",
+                            "Rinse fluids cascade directly forward into the main HSPPS vessel block.",
+                            "Parameter trackers require a strict hold runtime of <span class='highlight-text'>Not Less Than (NLT) 10 minutes</span> at <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Safety indicator lights shift to a bright solid green, proving the system is running strictly <span class='highlight-text'>Under N₂ Atmosphere</span>."
+                        ]
+                    },
+                    {
+                        title: "3. Final DMF Wash Phase Array",
+                        details: [
+                            "The interface brings the primary <span class='highlight-text'>HSPPS unit</span> back to center screen to run a final deep washing sequence loop.",
+                            "Material delivery pumps a total structural loop of <span class='highlight-text'>6 × 600 Lts of pure DMF</span> systematically across the media bed.",
+                            "Each individual step tracks an isolated local clock running for <span class='highlight-text'>10 minutes</span> at <span class='highlight-text'>20 ± 5°C</span>.",
+                            "The visual screen counter displays an incremental cycle check climbing systematically from <span class='highlight-text'>1/6 up to 6/6</span> before allowing line closure."
+                        ]
+                    }
+                ]
+            },
+            'specter-coupling': {
+                title: "'Specter' Coupling & Pre-activation Pipeline",
+                vessel: "303SSR-C 1001 / 303HHPPS-C 1001",
+                vesselType: "Dual Vessel Coordination Mode",
+                status: "IPC Checkpoint Standby",
+                fluidHeight: "45%",
+                fluidColor: "rgba(251, 191, 36, 0.4)",
+                agitating: false,
+                params: [
+                    { label: "Mixer Temp", value: "25 ± 5°C" },
+                    { label: "Agitation Target", value: "NLT 6 Hours" },
+                    { label: "HCN Gas Risk", value: "HIGH - Monitoring Active" },
+                    { label: "IPC Node Status", value: "Ninhydrin Test Gate" }
+                ],
+                alerts: [
+                    { type: 'danger', text: "TOXIC GAS WARNING: HCN Gas might be liberated during pre-activation reaction! Keep scrubber stack active." },
+                    { type: 'warning', text: "Thermal Alert: Dindori charging is exothermic. Control addition rates carefully." }
+                ],
+                steps: [
+                    {
+                        title: "1. Reactor Setup & Side Solution Preparation",
+                        details: [
+                            "The screen splits to trace two major physical structures: <span class='highlight-text'>303SSR-C 1001</span> (Solution Prep Reactor) and <span class='highlight-text'>303HSPPS-C 1001</span> (Main Synthesis Vessel, Hastelloy, 3.0 KL capacity).",
+                            "Pre-Rinse Loop: <span class='highlight-text'>DMF (~100 Lts)</span> fills the PAA reactor, agitates for <span class='highlight-text'>NLT 2 minutes</span>, and blows out to waste lines under an inert nitrogen blanket.",
+                            "Side Solution Assembly inside 303SSR-C 1001: <span class='highlight-text'>Specter (139.6 ± 0.7 Kgs)</span> and <span class='highlight-text'>Storme (44.8 ± 0.2 Kgs)</span> charge via automated glove box interfaces.",
+                            "Solvent volume adding <span class='highlight-text'>DMF (380 Lts)</span> sprays via internal wash headers before slowly dripping in <span class='highlight-text'>Dindori (54.0 Lts)</span>."
+                        ]
+                    },
+                    {
+                        title: "2. Critical Process Parameter & Gas Safety Indicators",
+                        details: [
+                            "Exothermic alarm modules activate real-time blinking flags during the Dindori line injection step.",
+                            "A highly prominent flashing red cloud animation displays directly above the vessel venting stacks to denote a severe <span class='highlight-text'>HCN Gas Hazard Risk</span>.",
+                            "Jacket automation steps the internal mass temperature directly to <span class='highlight-text'>25 ± 5°C</span> and sets a precise chemical holding counter for <span class='highlight-text'>2 hours ± 10 minutes</span>.",
+                            "Transfer Lines push the raw pre-activated mixture smoothly across to the primary HSPPS vessel under constant, uncompromised N₂ cover gas at <span class='highlight-text'>25 ± 5°C</span>."
+                        ]
+                    },
+                    {
+                        title: "3. Main Reaction, Rinses, & Ninhydrin IPC Checkpoint",
+                        details: [
+                            "Main Synthesis: After executing an internal wall-rinse loop using <span class='highlight-text'>220 Lts of DMF</span>, temperature loops lock the core process to <span class='highlight-text'>25 ± 5°C</span> while an intensive countdown clock sets for <span class='highlight-text'>NLT 6 hours</span>.",
+                            "Interactive IPC Checkpoint (Ninhydrin Test): The primary system visualization completely freezes at this node. Operator input is mandatory."
+                        ],
+                        hasDecision: true,
+                        decisionText: "In-Process Control (IPC): Ninhydrin Test Verification Gate"
+                    },
+                    {
+                        title: "4. Final Filtration & Washing Sequence",
+                        details: [
+                            "Once the analytical IPC test complies, filtration lines activate to push out liquid fractions to waste under strict <span class='highlight-text'>N₂ pressure</span>.",
+                            "DMF Wash Matrix: Pumps a standalone <span class='highlight-text'>400 Lts DMF rinse</span>, follows up with a <span class='highlight-text'>500 Lts DMF soak step</span>, and finishes with a <span class='highlight-text'>3 × 600 Lts DMF wash loop</span> stirring for <span class='highlight-text'>NLT 10 minutes</span> per round at <span class='highlight-text'>25 ± 5°C</span>.",
+                            "The preparation reactor finishes by flushing out entirely to the plant waste stream with a final <span class='highlight-text'>100 Lts DMF charge</span>."
+                        ]
+                    }
+                ]
+            },
+            'faraday-deprotect': {
+                title: "Visual Step-by-Step Flow: De-protection Phase (Faraday Intermediate Linked State)",
+                vessel: "303SSR-C 1002",
+                vesselType: "Stainless Steel Auxiliary Vessel",
+                status: "Executing Cleavage Loops",
+                fluidHeight: "65%",
+                fluidColor: "rgba(168, 85, 247, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Target Temperature", value: "20 ± 5°C" },
+                    { label: "Mix Matrix", value: "Persian in DMF sol." },
+                    { label: "Loop Progression", value: "Incrementing 1/2 to 2/2" },
+                    { label: "Atmospheric Seal", value: "N2 Secured" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Gas Release Notice: CO2 Gas Liberated during deprotection loop execution." }
+                ],
+                steps: [
+                    {
+                        title: "1. Deprotection and Washings (Executed 2 Times Loop)",
+                        details: [
+                            "The auxiliary reactor unit <span class='highlight-text'>303SSR-C 1002</span> highlights on the console display to indicate immediate processing state.",
+                            "Material entry charges <span class='highlight-text'>Persian in DMF solution (2 × 600 Lts)</span> directly into the vessel core.",
+                            "Jacket loops monitor core sensors to lock and track temperatures perfectly at <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Liquid pipelines animate a smooth transfer flow showing mass transitioning cleanly across from the SSR unit over into the primary HSPPS block.",
+                            "An internal digital countdown clock spins continuously for <span class='highlight-text'>20 ± 5 minutes at 20 ± 5°C</span> under uninterrupted mass agitation.",
+                            "The liquid mixture drains down through a lower discharge filter mesh directly out into the waste storage tank."
+                        ]
+                    },
+                    {
+                        title: "2. DMF Rinse Phase (Executed 3 Times Loop)",
+                        details: [
+                            "The UI repositions focus to show cleaning lines spraying down the internal walls of the auxiliary side reactor.",
+                            "Material Flow: <span class='highlight-text'>3 × 100 Lts of DMF</span> flushes the deprotection solution reactor, cascading the liquid down directly into the primary HSPPS vessel.",
+                            "Parameter Tracker: The batch mass is stirred for a continuous hold period of <span class='highlight-text'>Not Less Than (NLT) 10 minutes</span> at <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Safety Atmosphere: A green status banner displays, confirming filtration and line transfers are occurring strictly under an inert <span class='highlight-text'>N₂ atmosphere</span>."
+                        ]
+                    },
+                    {
+                        title: "3. Final DMF Wash Phase (Executed 6 Times Loop)",
+                        details: [
+                            "The main <span class='highlight-text'>HSPPS vessel</span> flashes to indicate a final purification cycle sequence.",
+                            "Material Flow: <span class='highlight-text'>6 × 600 Lts of pure DMF solvent</span> is systematically charged into the unit.",
+                            "Parameter Tracker: For each of the 6 separate loops, a digital timer counts down from <span class='highlight-text'>10 minutes</span> at a constant thermal baseline of <span class='highlight-text'>20 ± 5°C</span>.",
+                            "Critical Operating Note Build-In: A special text overlay prompts the operator: <span class='highlight-text'>'Note: Filter the last DMF wash till the bed level then, Filter the DMF completely before Persian in DMF solution transfer.'</span> This alerts the operator exactly when the filter bed should run dry before starting the next chemical stage."
+                        ]
+                    }
+                ]
+            },
+            'faraday-coupling': {
+                title: "'Faraday' Coupling & Pre-activation Operations",
+                vessel: "303SSR-C 1001",
+                vesselType: "Preparation Block Node",
+                status: "Long-Duration Holding",
+                fluidHeight: "50%",
+                fluidColor: "rgba(56, 189, 248, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Core Temp", value: "20 ± 5°C" },
+                    { label: "Agitation Target", value: "NLT 7 Hours" },
+                    { label: "Nitrogen Flow", value: "Secure Blanket" },
+                    { label: "Wall Wash Vol", value: "220 Lts DMF" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Dual Exothermic Flash 1: Dindori charging is highly exothermic, control feed rate safely." },
+                    { type: 'warning', text: "Dual Exothermic Flash 2: Faraday pre-activation charging is exothermic, monitor jacket temperature." },
+                    { type: 'danger', text: "TOXIC GAS LIBERATION: HCN gas might be liberated during pre-activation reaction loops!" }
+                ],
+                steps: [
+                    {
+                        title: "1. Parallel Reactor View & Setup Layout",
+                        details: [
+                            "The dashboard maps out preparation vessel <span class='highlight-text'>303SSR-C 1001</span> on the left panel view and the primary synthesis vessel <span class='highlight-text'>303HSPPS-C 1001</span> on the right panel view.",
+                            "Pre-Rinse Loop: <span class='highlight-text'>DMF (~100 Lts)</span> flows straight into the solution prep vessel, stirs under a secure nitrogen atmosphere, and filters completely away to waste lines.",
+                            "Side Solution Prep Line: Inside the SSR, <span class='highlight-text'>Faraday (102.5 Kgs)</span> and <span class='highlight-text'>Storme (44.8 Kgs)</span> powders are added through the animated glove box interface, followed by <span class='highlight-text'>DMF (380 Lts)</span> through a spray ball while internal temperature drops to <span class='highlight-text'>20 ± 5°C</span> as <span class='highlight-text'>Dindori (54 Lts)</span> is systematically dripped into the solution."
+                        ]
+                    },
+                    {
+                        title: "2. Thermal & Safety Warning Animations",
+                        details: [
+                            "The UI activates dual flashing indicators to flag back-to-back exothermic heat releases during chemical additions.",
+                            "A highly visible flashing toxic warning cloud alerts operators that <span class='highlight-text'>HCN gas hazards</span> are active above the columns during the reaction.",
+                            "Timer Sync: The mixture stirs continuously for <span class='highlight-text'>15 ± 5 minutes at 20 ± 5°C</span> before being transferred over into the main HSPPS vessel under an N₂ gas blanket."
+                        ]
+                    },
+                    {
+                        title: "3. Main Synthesis Vessel Processing & Ninhydrin IPC Check",
+                        details: [
+                            "Wall Wash: A pipeline animation pumps <span class='highlight-text'>220 Lts of DMF</span> down the internal walls of the reactor to wash down remaining materials, followed by an extra <span class='highlight-text'>40 Lts spray ball rinse</span>.",
+                            "Long Agitation: The core mass temperature locks tight at <span class='highlight-text'>20 ± 5°C</span> while a long-duration countdown timer executes for <span class='highlight-text'>NLT 7 hours</span> (Note: The HCN gas alarm flashes continuously during this 7-hour hold block).",
+                            "Interactive IPC Checkpoint: The automation stops at this point to await operator input regarding Ninhydrin results."
+                        ],
+                        hasDecision: true,
+                        decisionText: "In-Process Control (IPC): Ninhydrin Test Verification Gate"
+                    },
+                    {
+                        title: "4. Final Filtration & Washing Array",
+                        details: [
+                            "Once the test passes, the filtration animation routes spent mass to the waste tank under an N₂ atmosphere.",
+                            "DMF Wash (3 times): <span class='highlight-text'>3 × 600 Lts DMF</span> is pumped into the HSPPS unit, stirred for <span class='highlight-text'>NLT 10 minutes at 25 ± 5°C</span>, and filtered out completely.",
+                            "Bed Filter Note Alert: A distinct highlight card warns: <span class='highlight-text'>'Note: Filter the last DMF wash till the bed level then, Filter the DMF completely before Persian in DMF solution transfer.'</span>",
+                            "DMF Rinse (5 times): <span class='highlight-text'>5 × 100 Lts DMF</span> enters to clean out the side preparation vessel, transferring the rinses completely into the main HSPPS vessel to finish the phase."
+                        ]
+                    }
+                ]
+            },
+            'bollinger-deprotect': {
+                title: "Visual Step-by-Step Flow: De-protection Phase (Bollinger Intermediate State)",
+                vessel: "303SSR-C 1002",
+                vesselType: "Stainless Steel Auxiliary Module",
+                status: "Executing Deprotection",
+                fluidHeight: "70%",
+                fluidColor: "rgba(34, 197, 94, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Process Temp", value: "20 ± 5°C" },
+                    { label: "Reagent Input", value: "Persian in DMF sol." },
+                    { label: "Stir Window", value: "20 ± 5 min" },
+                    { label: "Atmosphere Status", value: "Under N2 Atmosphere" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Gas Emission Alarm: A flashing gas vent animation warns that CO2 gas is liberated during deprotection reaction steps." }
+                ],
+                steps: [
+                    {
+                        title: "1. Deprotection and Washings (Executed 2 Times Loop)",
+                        details: [
+                            "The deprotection solution reactor <span class='highlight-text'>303SSR-C 1002</span> glows on screen to indicate active processing states.",
+                            "Material Flow: <span class='highlight-text'>Persian in DMF sol. (2 × 600 Lts)</span> feeds directly into the reactor chamber.",
+                            "Parameter Tracker & Flow: The internal temperature indicator tracks to <span class='highlight-text'>20 ± 5°C</span>.",
+                            "A liquid pipeline animation shows the mass transferring over into the primary HSPPS unit, running an automated timer for <span class='highlight-text'>20 ± 5 minutes at 20 ± 5°C</span> under continuous agitation.",
+                            "Filtration: The spent mass drains out through a filter grid directly to the waste tank, tracking the loop counter across <span class='highlight-text'>1/2 and 2/2</span>."
+                        ]
+                    },
+                    {
+                        title: "2. DMF Rinse Phase (Executed 3 Times Loop)",
+                        details: [
+                            "The rinse feed line activates above the side SSR reactor unit.",
+                            "Material Flow: <span class='highlight-text'>3 × 120 Lts of DMF</span> enters to thoroughly rinse out the vessel walls, cascading the liquid down into the primary HSPPS vessel.",
+                            "Parameter Tracker: The mass stirs for a minimum holding range of <span class='highlight-text'>NLT 10 minutes</span>, filtering from the HSPPS into the waste tank under a secure <span class='highlight-text'>N₂ atmosphere at 20 ± 5°C</span>. This cycle loops <span class='highlight-text'>3 times</span> automatically."
+                        ]
+                    },
+                    {
+                        title: "3. Final DMF Wash Phase (Executed 6 Times Loop)",
+                        details: [
+                            "The primary HSPPS unit isolates on screen to execute its final purification rounds.",
+                            "Material Flow: <span class='highlight-text'>6 × 800 Lts of pure DMF</span> is systematically flushed through the active system layers.",
+                            "Parameter Tracker: For each of the 6 individual steps, a digital timer counts down exactly <span class='highlight-text'>10 minutes at 20 ± 5°C</span>.",
+                            "Drain: The wash liquid is filtered down into the waste tank under an N₂ gas blanket.",
+                            "Critical Operational Pop-Up Alert: A highlight box states: <span class='highlight-text'>\"Note: Filter the last DMF wash till the bed level then, Filter the DMF completely before Specter solution transfer.\"</span> (Note: This indicates a critical preparation checkpoint for the next chemical stage)."
+                        ]
+                    }
+                ]
+            },
+            'bollinger-coupling': {
+                title: "'Bollinger' Coupling & Resin Prep Sequence",
+                vessel: "303SSR-C 1001 / 303HHPPS-C 1001",
+                vesselType: "Dual Component System Coordination",
+                status: "Incubation Phase Active",
+                fluidHeight: "60%",
+                fluidColor: "rgba(251, 191, 36, 0.4)",
+                agitating: true,
+                params: [
+                    { label: "Jacket Temp Range", value: "20 ± 5°C" },
+                    { label: "Hold Duration Lock", value: "NLT 16 Hours" },
+                    { label: "Solvent Input Vol", value: "510 Lts DMF" },
+                    { label: "Anion Spray Wash", value: "220 Lts DMF" }
+                ],
+                alerts: [
+                    { type: 'danger', text: "LETHAL GAS HAZARD ENVELOPE: HCN gas might be liberated during pre-activation reaction! Keep exhaust lines clear." },
+                    { type: 'warning', text: "Thermal Exothermic Spike: Dindori charging is exothermic. Manage cold feed control." }
+                ],
+                steps: [
+                    {
+                        title: "1. Reactor Rinse & Side Solution Setup Interface",
+                        details: [
+                            "The user dashboard maps out the physical layout displaying <span class='highlight-text'>303SSR-C 1001</span> (left side) and the primary <span class='highlight-text'>303HHPPS-C 1001</span> reactor (right side).",
+                            "Pre-Rinse Loop: An animation shows a solution of Faraday being prepared in the reactor and transferred over to the main HSPPS system first, followed by an automated DMF rinse sequence to waste.",
+                            "Bollinger Preparation inside side SSR: <span class='highlight-text'>Bollinger (131.6 Kgs)</span> and <span class='highlight-text'>Storme (55.4 Kgs)</span> powders charge via the glove box interface. <span class='highlight-text'>DMF (510 Lts)</span> is introduced using a spray-ball animation under active stirring, internal temperature drops to <span class='highlight-text'>20 ± 5°C</span>, and <span class='highlight-text'>Dindori (75.2 Lts)</span> is steadily added."
+                        ]
+                    },
+                    {
+                        title: "2. Thermal Exothermic Alerts & Toxic Gas Triggers",
+                        details: [
+                            "Dual Exothermic Flashes trigger visual flags: 1. As Dindori is added (\"Note: Dindori charging is exothermic, control as necessary\"). 2. Right after Bollinger addition (\"Note: Bollinger pre-activation charging is exothermic, control as necessary\").",
+                            "Lethal Gas Hazard Animation: A prominent flashing cloud indicator activates on the screen layout flagging severe <span class='highlight-text'>HCN gas evolution risks</span>.",
+                            "Transfer Logic: System counts down a <span class='highlight-text'>15 ± 5 minute</span> stir cycle at <span class='highlight-text'>20 ± 5°C</span>, then activates a transfer valve animation, pushing the fluid into the main HSPPS vessel under a strict <span class='highlight-text'>N₂ atmosphere at 20 ± 5°C</span>."
+                        ]
+                    },
+                    {
+                        title: "3. Extended Incubation & Ninhydrin Test Node",
+                        details: [
+                            "Wall Wash & Extended Agitation: <span class='highlight-text'>220 Lts of DMF</span> sprays down the internal walls of the HSPPS reactor. Temperature locks onto <span class='highlight-text'>20 ± 5°C</span> while a digital timer sets for an extended hold of <span class='highlight-text'>NLT 16 hours</span> (The HCN gas alarm remains flashing throughout this entire 16-hour hold step).",
+                            "Interactive IPC Checkpoint: The core animation sequence pauses for manual confirmation."
+                        ],
+                        hasDecision: true,
+                        decisionText: "In-Process Control (IPC): Ninhydrin Test Verification Gate"
+                    },
+                    {
+                        title: "4. Peptidyl Resin Final Washing Array",
+                        details: [
+                            "Once IPC complies, filtration lines open under N₂ protection.",
+                            "DMF Wash (6 times loop): <span class='highlight-text'>6 × 600 Lts of DMF</span> pumps into the primary HSPPS. Each step stirs for <span class='highlight-text'>NLT 10 minutes at 25 ± 5°C</span> and filters to waste.",
+                            "Bed Level Warning Card: A distinct highlight panel notes: <span class='highlight-text'>\"Note: Charge last DMF wash having temp. of 16 ± 1°C and stir for NLT 10 min. at 16 ± 1°C. Filter the last DMF wash till the bed level then, Filter the DMF completely...\"</span> The UI graphics show the liquid level dropping perfectly inline with the simulated resin filter bed.",
+                            "Side Vessel Rinse: <span class='highlight-text'>5 × 100 Lts of DMF</span> is pumped through the side PAA solution reactor to flush out lingering residue directly into the main waste track."
+                        ]
+                    }
+                ]
+            },
+            'final-wash-isolation': {
+                title: "Stage I Final Washings & Product Isolation Matrix",
+                vessel: "303HSPPS-C 1001",
+                vesselType: "3.0 KL Hastelloy Main Synthesis Unit",
+                status: "Vacuum Drying Cycle",
+                fluidHeight: "15%",
+                fluidColor: "rgba(239, 68, 68, 0.2)",
+                agitating: false,
+                params: [
+                    { label: "Vacuum Level", value: "250 mbar vacuum" },
+                    { label: "Jacket Heat Temp", value: "35 ± 5°C" },
+                    { label: "LOD Test Status", value: "NMT 1.0% Pass Standard" },
+                    { label: "Calculated Yield", value: "~190 Kgs Mayil-I Dry" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Thermal Warning: 1st MCI wash temp. should be strictly below 10°C! Slider dropping into deep frost zone." }
+                ],
+                steps: [
+                    {
+                        title: "1. The Multi-Solvent Wash Matrix",
+                        details: [
+                            "The user interface runs an automated sequential checklist showing solvent feeds cycling into the main 3.0 KL Hastelloy HSPPS reactor.",
+                            "MCI Wash (4 times Loop): <span class='highlight-text'>4 × 800 Lts of MCI</span> enters. UI Thermal Tracker shows mass temperature dropping and locking at <span class='highlight-text'>20 ± 5°C</span> with a 10-minute countdown clock per loop. Critical Alert Pop-up highlights the thermal slider dropping into a deep blue frost zone for the first round (<span class='highlight-text'>Should be below 10°C</span>).",
+                            "IPA Wash (2 times Loop): <span class='highlight-text'>2 × 800 Lts of IPA</span> is charged into the HSPPS, stirred for <span class='highlight-text'>NLT 10 minutes at 20 ± 5°C</span>, and filtered down under an N₂ atmosphere.",
+                            "Zamaiya (MTBE) Wash (2 times Loop): <span class='highlight-text'>2 × 800 Lts of Zamaiya</span> is introduced, stirred for <span class='highlight-text'>NLT 10 minutes at 20 ± 5°C</span>, and drained clean.",
+                            "Final Zamaiya Soak & Stir: An additional <span class='highlight-text'>480 Lts of Zamaiya</span> is added, stirred for a brief window of <span class='highlight-text'>NLT 5 minutes at 20 ± 5°C</span>, and filtered dry under nitrogen gas pressure lines."
+                        ]
+                    },
+                    {
+                        title: "2. The Vacuum Drying & Desiccation Phase",
+                        details: [
+                            "Visual Action: Liquid pipe animations fade away, and a vacuum pump graphic starts spinning next to the HSPPS unit display block.",
+                            "Parameter Tracker: Pressure gauge indicators drop and lock down at exactly <span class='highlight-text'>250 mbar vacuum</span>, while the temperature indicator tracks up to <span class='highlight-text'>35 ± 5°C</span>.",
+                            "Analytical IPC Pop-Up (Loss on Drying - LOD): The animation pauses at a quality control node labeled: <span class='highlight-text'>\"Loss on Drying Test (LOD over 2 Hrs)\"</span>.",
+                            "The dashboard display panel shows the pass criteria requirement text: <span class='highlight-text'>\"NMT 1.0% (or Loss on Drying NMT 3.0%)\"</span>. Once the user toggles compliance, the system officially marks the batch stage as finished."
+                        ]
+                    },
+                    {
+                        title: "3. Equipment Turn-Down & Final Stage I Yield",
+                        details: [
+                            "Vessel Reset: Interface animations show a final rinse of the side distillation reactor using <span class='highlight-text'>150 Lts of MCI</span> followed by <span class='highlight-text'>150 Lts of Purified Water</span> sent directly to discard lines.",
+                            "Final Yield Celebration: The product collection node flashes brightly at the bottom of the process flow chart: <span class='highlight-text'>📦 Mayil-I (Dry) material (~190 Kgs)</span> is isolated and packaged into secure drums."
+                        ]
+                    }
+                ]
+            },
+            'cleavage-neutralization': {
+                title: "Stage II Workflow: Cleavage Operations & Reagent Neutralization",
+                vessel: "303HSPPS-C 1002 / 303HASR-C 1003",
+                vesselType: "Hastelloy Cleavage Vessel (1.0 KL)",
+                status: "Acid Cleavage Running",
+                fluidHeight: "40%",
+                fluidColor: "rgba(239, 68, 68, 0.5)",
+                agitating: true,
+                params: [
+                    { label: "Cleavage Temp", value: "10 ± 5°C" },
+                    { label: "Tahan Acid Input", value: "6 Lts Tahan + 594 Lts MCI" },
+                    { label: "Exposure Clock", value: "10 ± 5 min Hold" },
+                    { label: "Max Time Limit", value: "NMT 120 min Total" }
+                ],
+                alerts: [
+                    { type: 'danger', text: "CRITICAL TIME CONSTRAINT: Total Tahan exposure time MUST be NMT 120 minutes! Target 60 minutes max from cleavage onset to neutralization end." }
+                ],
+                steps: [
+                    {
+                        title: "1. Reactor Pre-Rinse & Solid Charging Protocol",
+                        details: [
+                            "The UI switches active equipment modules to focus explicitly on the <span class='highlight-text'>1.0 KL Hastelloy Cleavage Vessel 303HSPPS-C 1002</span> and a side solution preparation unit <span class='highlight-text'>303HASR-C 1003</span>.",
+                            "System Pre-Rinse: <span class='highlight-text'>MCI (~100 Lts)</span> automatically sprays into the main vessel, stirs for 2 minutes, and drains under a nitrogen atmosphere.",
+                            "Resin Charging: <span class='highlight-text'>Mayil-I (Dry) material (30 ± 0.2 Kgs sub-lot)</span> is visually added into the HSPPS through an animated glove box under a strict nitrogen blanket.",
+                            "Pre-Chilled Solvent Feed: Pre-cooled <span class='highlight-text'>MCI (300 Lts at 10 ± 5°C)</span> is pumped into the reactor through a spray ball. Temperature display locks in at <span class='highlight-text'>10 ± 5°C</span> and a timer runs for <span class='highlight-text'>10 ± 5 minutes</span> before filtration."
+                        ]
+                    },
+                    {
+                        title: "2. Acid Cleavage Execution (The TFA / Tahan Phase)",
+                        details: [
+                            "Parallel Solution Prep: In the side reactor <span class='highlight-text'>303HASR-C 1003</span>, a 1% Tahan solution is pre-rinsed and prepared using <span class='highlight-text'>Tahan (6 Lts)</span> and <span class='highlight-text'>MCI (594 Lts)</span>.",
+                            "Acid Transfer Line: A bright red transfer line animation flows from the HASR vessel over into the primary HSPPS cleavage vessel.",
+                            "Thermal Sink Animation: The UI temperature bar shifts to a chilly <span class='highlight-text'>10 ± 5°C</span> under a continuous nitrogen blanket.",
+                            "Cleavage Reaction Clock: The system triggers an animated agitation loop tracking a tight <span class='highlight-text'>10 ± 5 minute hold window at 10 ± 5°C</span>."
+                        ]
+                    },
+                    {
+                        title: "3. Critical Timing Control & Neutralization Loop",
+                        details: [
+                            "Transfer to Neutralization: Once the 10 minutes pass, the visual flow lines pump the product mass away from the cleavage reactor over to a designated <span class='highlight-text'>Neutralization Reactor</span>.",
+                            "Strict Time Window Constraint Display: A prominent warning clock flashes on the user dashboard displaying: <span class='highlight-text'>\"Note: Total Tahan exposure time should be NMT 120 minutes. Target time 60 minutes (from starting of the cleavage to the end of neutralization).\"</span> This emphasizes the strict kinetic boundary of the acid exposure.",
+                            "Quenching: Pre-cooled (<span class='highlight-text'>10 ± 5°C</span>) <span class='highlight-text'>MCI (300 Lts)</span> is added directly into the stabilization reactor to neutralize and kill the aggressive cleavage reaction.",
+                            "Stir Cycle: The stabilized mass stirs for <span class='highlight-text'>10 ± 5 minutes at 10 ± 5°C</span> before being pumped across into reactor <span class='highlight-text'>303HASR-C</span> for temporary holding."
+                        ]
+                    },
+                    {
+                        title: "4. Post-Cleavage Clean Down Matrix",
+                        details: [
+                            "Vessel Rinse: The main HSPPS cleavage reactor lines open up to spray a final loop of <span class='highlight-text'>MCI (100 Lts followed by another 100 Lts)</span> under a 2-minute agitation cycle to flush lingering trace values down into the main process track before nitrogen air-blow drying."
+                        ]
+                    }
+                ]
+            },
+            'workup-extraction': {
+                title: "Workup Phase & Structural Multi-Stage Extraction Cascade",
+                vessel: "303HASR-C 1004 / 303SSR-C 1005 / 1006",
+                vesselType: "Stainless Steel Neutralization & Distillation Assembly",
+                status: "Phase Separation Mode",
+                fluidHeight: "80%",
+                fluidColor: "rgba(251, 191, 36, 0.3)",
+                agitating: false,
+                params: [
+                    { label: "Neutralization Vol", value: "2.0 KL Vessel Capacity" },
+                    { label: "Reagent Input", value: "Vietnam (Pyridine) 6.6 Lts" },
+                    { label: "Distillation Bound", value: "NMT 25°C Under Vacuum" },
+                    { label: "Layer Settling Time", value: "Stir NLT 2 hr at 20 ± 5°C" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "Process Check: Settle time can be increased based on clear visual separation of layer boundaries." }
+                ],
+                steps: [
+                    {
+                        title: "1. Neutralization & Phase Stabilization (303HASR-C 1004)",
+                        details: [
+                            "Visual Action: The UI focuses on the <span class='highlight-text'>2.0 KL Stainless Steel Neutralization Vessel (303HASR-C 1004)</span>.",
+                            "Pre-Rinse: An animation shows an MCI rinse (<span class='highlight-text'>100 Lts</span>) flushing the vessel to waste under nitrogen before active batch use.",
+                            "Material Addition: <span class='highlight-text'>Vietnam (Pyridine) (6.6 Lts)</span> is added directly into the active reactor line.",
+                            "Thermal Sink & Stir: The jacket temperature indicator drops to <span class='highlight-text'>10 ± 5°C</span> while the chemical mixture stirs for exactly <span class='highlight-text'>30 ± 5 minutes</span>.",
+                            "Transfer: A pipeline animation routes this filtered solution cleanly down into the distillation block area."
+                        ]
+                    },
+                    {
+                        title: "2. Distillation & Volume Reduction (303SSR-C 1005 / 1006)",
+                        details: [
+                            "Visual Action: The UI moves focus to the <span class='highlight-text'>2.0 KL Stainless Steel Distillation & Workup Vessels (303SSR-C 1005 / 1006)</span>.",
+                            "Solvent Strip Animation: A vacuum distillation animation triggers, showing solvent vapor rising out of the vessel. The parameter bar locks at <span class='highlight-text'>NMT 25°C under vacuum</span> until the internal volume drops to a tight <span class='highlight-text'>10 ± 1 volume ratio</span>.",
+                            "Aqueous Quench: Purified water (<span class='highlight-text'>600 Lts</span>) is pumped into the reactor. The temperature stabilizes at <span class='highlight-text'>20 ± 5°C</span> and a hold timer ticks down for <span class='highlight-text'>30 ± 5 minutes</span>.",
+                            "Settling Dynamic Graphic: A settling animation takes over the vessel container graphic. A status note pops up: <span class='highlight-text'>\"Note: Settle can be increased based on clear separation of layer (Stir for NLT 2 hr. at 20 ± 5°C).\"</span>",
+                            "Phase Split Action: The bottom valve animation opens, draining the lower <span class='highlight-text'>aqueous layer directly to the waste tank</span>, leaving the rich organic layer behind in the reactor core."
+                        ]
+                    },
+                    {
+                        title: "3. Three-Lots Combined Procedure & Cuno Filtration (303RT-C 1006 / 1008)",
+                        details: [
+                            "Visual Action: The UI updates its layout to show three individual sub-lot streams merging together into a single pipeline, flowing into the <span class='highlight-text'>1.0 KL Stainless Steel Organic Layer Receiver Tanks (303RT-C 1006 / 1008)</span>.",
+                            "Safety Atmosphere Blanket: A strong green indicator reminds the user that the system is maintaining a strict <span class='highlight-text'>nitrogen flow rate of 4–6 LPM</span> during this active filtration step.",
+                            "Final Clarification Animation: The isolated organic layer is pumped through a designated inline <span class='highlight-text'>Cuno Filter graphic</span> into a final storage node."
+                        ]
+                    }
+                ]
+            },
+            'concentration-precipitation': {
+                title: "Final Pipeline: Concentration, Anti-Solvent Precipitation & Drying",
+                vessel: "303SSR-C 1007 & 1008",
+                vesselType: "1.5 KL Stainless Steel Concentration & Stripping Array",
+                status: "Discharging Powder Product",
+                fluidHeight: "5%",
+                fluidColor: "rgba(255, 255, 255, 0.8)",
+                agitating: false,
+                params: [
+                    { label: "Distillation Limit", value: "NMT 30°C under vacuum" },
+                    { label: "Precipitation Temp", value: "15 ± 5°C pocket" },
+                    { label: "Dryer Vacuum Index", value: "< 250 mbar vacuum" },
+                    { label: "Isolated Yield", value: "~75.6 Kgs Mayil-II Dry" }
+                ],
+                alerts: [
+                    { type: 'warning', text: "GC Control Gate Check: Interface will loop back through an additional solvent sweep if MCI content test fails." }
+                ],
+                steps: [
+                    {
+                        title: "1. Concentration & Solvent Exchange Phases",
+                        details: [
+                            "The UI highlights the <span class='highlight-text'>1.5 KL Stainless Steel Vessels (303SSR-C 1007 & 1008)</span> on-screen graphics.",
+                            "Pre-Rinse: An animation shows an MCI spray (<span class='highlight-text'>100 Lts</span>) rinsing the concentration reactor lines to waste under nitrogen gas control.",
+                            "Organic Feed: The clarified organic layer from the extraction stage enters the vessel.",
+                            "Distillation Loop (IPAc Additions): The system simulates sequential additions of pre-cooled <span class='highlight-text'>Isopropyl acetate (IPAc) (3 × 459 Lts followed by a final 270 Lts)</span>.",
+                            "Vacuum Distillation UI: A distillation animation shows solvent volume stripping away under strict thermal bounds: <span class='highlight-text'>NMT 30°C under vacuum</span> until target mass matches required volume multiplier ratios (<span class='highlight-text'>3 ± 0.5 volumes</span>).",
+                            "Interactive GC Test Node: Process flow halts at a quality control gate: <span class='highlight-text'>\"In-Process Control (IPC): MCI Content by GC\"</span>. If results fail, the interface loops back through an additional solvent sweep (<span class='highlight-text'>n-Heptane add and distill at NMT 35°C</span>)."
+                        ]
+                    },
+                    {
+                        title: "2. Anti-Solvent Precipitation Control Loop",
+                        details: [
+                            "Visual Action: The reactor graphic changes from a clear solution to a cloudy, solid-suspension state visualization.",
+                            "Material Addition: <span class='highlight-text'>n-Heptane (486 Lts)</span> is added smoothly at a tightly managed temperature bracket of <span class='highlight-text'>30–35°C</span>.",
+                            "Thermal Transition: The temperature gauge drops from 35°C down to a cold crystallization pocket of <span class='highlight-text'>15 ± 5°C</span>.",
+                            "Crystallization Timer: The internal agitator rotates while a countdown clock ticks for <span class='highlight-text'>30 ± 5 minutes</span> to complete the precipitation phase."
+                        ]
+                    },
+                    {
+                        title: "3. Lot Combination & High-Vacuum Isolation (303ANF-C 1001 & 1002)",
+                        details: [
+                            "Visual Action: The UI displays a multi-stream flow showing <span class='highlight-text'>6 individual lots</span> merging together into the primary <span class='highlight-text'>3.0 KL Stainless Steel Filter Dryers (303ANF-C 1001 & 1002)</span>.",
+                            "Cake Washing: An animation shows an <span class='highlight-text'>n-Heptane spray (522 Lts)</span> washing down through the filter cake bed to strip remaining impurities.",
+                            "Vacuum Drying Cycle: Liquid graphics fade out completely. A high-vacuum pump visual begins pulsing next to the filter dryer module: Pressure Gauge locks at <span class='highlight-text'>&lt; 250 mbar vacuum</span>, Thermal Jacket tracks up to <span class='highlight-text'>35 ± 5°C</span>, and End-Point Test Check runs until volatile content complies with Gas Chromatography (GC) limits."
+                        ]
+                    },
+                    {
+                        title: "4. Final Product Release & Packaging Nodes",
+                        details: [
+                            "Cool Down: The dry powder cake cools down below <span class='highlight-text'>30°C</span>.",
+                            "Discharge Node: The glove box packaging port opens at the base of the vessel module.",
+                            "The final product intermediate yield flashes on screen: <span class='highlight-text'>📦 Mayil-II (Dry) material (~75.6 Kgs total output)</span>. The production loop marks complete!"
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Execution function to rebuild layout dynamically and inject proper state animations
+        function switchStage(stageKey) {
+            // Toggle Active Navigation Button States
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            const targetBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(stageKey));
+            if(targetBtn) targetBtn.classList.add('active');
+
+            const stage = processDatabase[stageKey];
+            const viewport = document.getElementById('stage-viewport');
+
+            // Construct Header & Live Mimic Panel View
+            let html = `
+                <h2 style="margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; color: var(--accent-blue);">${stage.title}</h2>
+                
+                <div class="mimic-panel">
+                    <div class="mimic-header">
+                        <div>
+                            <span class="reactor-id">${stage.vessel}</span>
+                            <span style="margin-left: 10px; color: var(--text-muted); font-size: 0.9rem;">${stage.vesselType}</span>
+                        </div>
+                        <div class="live-status-pill">${stage.status}</div>
+                    </div>
+
+                    <div class="animation-container">
+                        <div class="vessel-graphic">
+                            <div class="vessel-fluid ${stage.agitating ? 'agitating' : ''}" style="height: ${stage.fluidHeight}; background-color: ${stage.fluidColor};"></div>
+                            <span style="z-index: 2; font-family: monospace; font-size: 0.85rem; font-weight: bold; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">
+                                ${stage.fluidHeight} Filled
+                            </span>
+                        </div>
+                        <div class="pipe-line active-flow"></div>
+                        <div class="vessel-graphic" style="width: 70px; height: 80px; border-radius: 4px;">
+                            <span style="font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 5px;">Discharge Header</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+            `;
+
+            // Append Live Parameters Cards
+            stage.params.forEach(p => {
+                html += `
+                    <div class="param-card">
+                        <div class="param-label">${p.label}</div>
+                        <div class="param-value">${p.value}</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            // Append Active Safety Alarms If Applicable
+            if(stage.alerts && stage.alerts.length > 0) {
+                stage.alerts.forEach(a => {
+                    html += `
+                        <div class="alert-box ${a.type === 'warning' ? 'warning' : ''}">
+                            <span>⚠️</span>
+                            <div>${a.text}</div>
+                        </div>
+                    `;
+                });
+            }
+
+            // Append Exhaustive Instructional Step Documentation List
+            html += `<div class="process-details-section"><h2>Detailed Step-by-Step Operating Instructions</h2>`;
+            
+            stage.steps.forEach(s => {
+                html += `
+                    <div class="step-block">
+                        <h4>${s.title}</h4>
+                        <ul class="sub-steps-list">
+                `;
+                s.details.forEach(detail => {
+                    html += `<li>${detail}</li>`;
+                });
+                html += `</ul>`;
+
+                // Add interactive action paths if required by step logic (e.g., IPC verification gates)
+                if(s.hasDecision) {
+                    html += `
+                        <div class="decision-block">
+                            <strong style="color: var(--accent-amber); display: block; margin-bottom: 8px;">📊 ${s.decisionText}</strong>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Analytical verification mandatory. Choose test result outcome to set routing:</p>
+                            <div class="btn-group">
+                                <button class="action-btn confirm" onclick="alert('UI Status Updated: Test Complies. Next batch state unlocked successfully.')">In-Spec: Complies (Advance)</button>
+                                <button class="action-btn reject" onclick="alert('UI Routing Loop Triggered: Test Fails. System routes back to execution loop for 1 extra hour of stirring.')">Out-of-Spec: Fails (Loop Back)</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+            });
+
+            html += `</div>`;
+            viewport.innerHTML = html;
+        }
+
+        // Initialize display configuration on raw load state
+        window.onload = function() {
+            switchStage('nortel-coupling');
+        };
+    </script>
+</body>
+</html>
