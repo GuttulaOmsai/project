@@ -1084,14 +1084,14 @@
             }
 
             // Append Exhaustive Instructional Step Documentation List
-            html += `<div class="process-details-section"><h2>Detailed Step-by-Step Operating Instructions</h2>`;
+            html += `<div class="process-details-section"><h2>DETAILED PROCESS</h2>`;
             
             stage.steps.forEach(s => {
                 html += `
                     <div class="step-block">
                         <h4>${s.title}</h4>
                         <ul class="sub-steps-list">
-                `;
+
                 s.details.forEach(detail => {
                     html += `<li>${detail}</li>`;
                 });
