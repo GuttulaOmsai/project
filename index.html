@@ -1123,27 +1123,7 @@
             switchStage('nortel-coupling');
         }; 
     </script>
-<script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-    const SUPABASE_URL = "https://bmyvyydpyvhsyxexoawb.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJteXZ5eWRweXZoc3l4ZXhvYXdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4NzUyNDYsImV4cCI6MjA5OTQ1MTI0Nn0.Y5WWVWMalYQ3htohrfl6nqbF_mqIXomJcPacpq3yucA";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    async function checkAccess() {
-        const { data } = await supabase.auth.getSession();
-        
-        // If no active login session is found, boot them back to the Netlify login page!
-        if (!data?.session) {
-            alert("Access Denied! Please log in first.");
-            window.location.href = "https://omsaiguttula.netlify.app/"; 
-        }
-    }
-
-    // Run the security gate immediately when the page opens
-    checkAccess();
-</script>
     
 </body>
 </html>
